@@ -1,7 +1,7 @@
 package grifts
 
 import (
-	"github.com/AndriiOmelianenko/workshops/shop/api/actions"
+	"github.com/AndriiOmelianenko/shop-api/actions"
 	"github.com/gobuffalo/buffalo"
 )
 

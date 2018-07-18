@@ -7,7 +7,7 @@ import (
 	"github.com/gobuffalo/envy"
 	"github.com/unrolled/secure"
 
-	"github.com/AndriiOmelianenko/workshops/shop/api/models"
+	"github.com/AndriiOmelianenko/shop-api/models"
 	"github.com/gobuffalo/x/sessions"
 	"github.com/rs/cors"
 )

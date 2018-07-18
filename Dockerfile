@@ -4,7 +4,7 @@ RUN apk add --no-cache ca-certificates
 
 WORKDIR /bin/
 
-COPY api/app .
+COPY app .
 
 # Uncomment to run the binary in "production" mode:
 # ENV GO_ENV=production

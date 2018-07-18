@@ -2,6 +2,13 @@
 
 Let's create API for some common online shop:
 
+migrate database (create tables)
+docker-compose exec api ./app migrate
+
+seed database with values
+$ time docker-compose exec api ./app task db:seed
+
+
 ## DB entity
 
 * item [id, alias, title, desc, price, pictures, count]

@@ -3,7 +3,7 @@ package actions
 import (
 	"github.com/gobuffalo/buffalo"
 	"encoding/json"
-	"github.com/AndriiOmelianenko/workshops/shop/api/models"
+	"github.com/AndriiOmelianenko/shop-api/models"
 	"strconv"
 )
 

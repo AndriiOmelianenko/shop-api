@@ -5,7 +5,7 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/AndriiOmelianenko/workshops/shop/api/models"
+	"github.com/AndriiOmelianenko/shop-api/models"
 	"github.com/gobuffalo/uuid"
 	"github.com/icrowley/fake"
 	"github.com/markbates/grift/grift"

@@ -2,7 +2,7 @@ package actions
 
 import (
 	"github.com/gobuffalo/buffalo"
-	"github.com/AndriiOmelianenko/workshops/shop/api/models"
+	"github.com/AndriiOmelianenko/shop-api/models"
 	"fmt"
 )
 
