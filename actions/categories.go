@@ -1,31 +1,34 @@
 package actions
 
 import (
-	"github.com/gobuffalo/buffalo"
+	"net/http"
+	"encoding/json"
 	"github.com/AndriiOmelianenko/shop-api/models"
 	"fmt"
+	"gopkg.in/mgo.v2/bson"
+	"github.com/AndriiOmelianenko/shop-api/dao"
+	"github.com/gorilla/mux"
 )
 
 // CategoriesList default implementation.
-// curl -X GET -H "Content-Type: application/json" http://127.0.0.1:8080/categories/list
-func CategoriesList(c buffalo.Context) error {
+// curl -X GET -H "Content-Type: application/json" http://127.0.0.1:8080/categories
+func CategoriesList(w http.ResponseWriter, r *http.Request) {
 	categories := models.Categories{}
-	err := models.DB.All(&categories)
+	err := dao.DB.C(dao.COLLECTION_CATEGORIES).Find(bson.M{}).All(&categories)
 	if err != nil {
-		fmt.Println("error getting list of categories:", err)
-		return c.Render(404, r.String("404 not found\n%v", err))
+			fmt.Println("error getting list of categories:", err)
 	}
-	return c.Render(200, r.JSON(&categories))
+	json.NewEncoder(w).Encode(categories)
 }
 
 // CategoriesIndex default implementation.
-// curl -X GET -H "Content-Type: application/json" http://127.0.0.1:8080/categories/<category ID>
-func CategoriesIndex(c buffalo.Context) error {
+// curl -X GET -H "Content-Type: application/json" http://127.0.0.1:8080/categories/<categoryID>
+func CategoriesIndex(w http.ResponseWriter, r *http.Request) {
 	category := models.Category{}
-	err := models.DB.Find(&category, c.Param("category"))
+	params := mux.Vars(r)
+	err := dao.DB.C(dao.COLLECTION_CATEGORIES).FindId(bson.ObjectIdHex(params["category"])).One(&category)
 	if err != nil {
 		fmt.Println("error getting specific category:", err)
-		return c.Render(404, r.String("404 not found\n%v", err))
 	}
-	return c.Render(200, r.JSON(&category))
+	json.NewEncoder(w).Encode(category)
 }

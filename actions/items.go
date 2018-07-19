@@ -1,29 +1,34 @@
 package actions
 
 import (
-	"github.com/gobuffalo/buffalo"
-	"github.com/AndriiOmelianenko/shop-api/models"
 	"fmt"
+	"net/http"
+	"github.com/AndriiOmelianenko/shop-api/dao"
+	"gopkg.in/mgo.v2/bson"
+	"github.com/AndriiOmelianenko/shop-api/models"
+	"encoding/json"
+	"github.com/gorilla/mux"
 )
 
 // ItemsList default implementation.
-func ItemsList(c buffalo.Context) error {
+// curl -X GET -H "Content-Type: application/json" http://127.0.0.1:8080/items
+func ItemsList(w http.ResponseWriter, r *http.Request) {
 	items := models.Items{}
-	err := models.DB.All(&items)
+	err := dao.DB.C(dao.COLLECTION_ITEMS).Find(bson.M{}).All(&items)
 	if err != nil {
 		fmt.Println("error getting list of items:", err)
-		return c.Render(404, r.String("404 not found\n%v", err))
 	}
-	return c.Render(200, r.JSON(&items))
+	json.NewEncoder(w).Encode(items)
 }
 
 // ItemsIndex default implementation.
-func ItemsIndex(c buffalo.Context) error {
+//curl -X GET -H "Content-Type: application/json" http://127.0.0.1:8080/items/<itemID>
+func ItemsIndex(w http.ResponseWriter, r *http.Request) {
 	item := models.Item{}
-	err := models.DB.Find(&item, c.Param("item"))
+	params := mux.Vars(r)
+	err := dao.DB.C(dao.COLLECTION_CATEGORIES).FindId(bson.ObjectIdHex(params["item"])).One(&item)
 	if err != nil {
 		fmt.Println("error getting specific item:", err)
-		return c.Render(404, r.String("404 not found\n%v", err))
 	}
-	return c.Render(200, r.JSON(&item))
+	json.NewEncoder(w).Encode(item)
 }

@@ -34,6 +34,9 @@ import:
 - package: github.com/corpix/uarand
 - package: github.com/gorilla/mux
   version: ~1.6.2
+- package: github.com/BurntSushi/toml
+  version: ~0.3.0
+- package: gopkg.in/mgo.v2
 testImport:
 - package: github.com/gobuffalo/packr
   version: ~1.11.1
