@@ -9,21 +9,8 @@ import (
 	"gopkg.in/mgo.v2/bson"
 	"sync"
 	"time"
+	"github.com/urfave/cli"
 )
-
-//
-//import (
-//	"fmt"
-//	"math/rand"
-//	"time"
-//
-//	"github.com/AndriiOmelianenko/shop-api/models"
-//	"github.com/gobuffalo/uuid"
-//	"github.com/icrowley/fake"
-//	"github.com/markbates/grift/grift"
-//	"sync"
-//)
-//
 
 type ShopDAO struct {
 	Server   string
@@ -39,40 +26,34 @@ const (
 	COLLECTION_ORDEREDS   = "oredereds"
 )
 
-func (m *ShopDAO) Connect() error {
+func (m *ShopDAO) Connect() {
 	session, err := mgo.Dial(m.Server)
 	if err != nil {
 		fmt.Println("error connecting to mongodb:", err)
 	}
 	DB = session.DB(m.Database)
-	if !(m.isDatabase(session)) {
-		err := m.SeedDatabase(session)
-		if err != nil {
-			fmt.Println("error migrating database: ", err)
-		}
-	}
-	return err
 }
 
-func (m *ShopDAO) isDatabase(session *mgo.Session) bool {
-	databases, err := session.DatabaseNames()
-	if err != nil {
-		fmt.Println("error getting db names", err)
-	}
-	for _, database := range databases {
-		if database == m.Database {
-			return true
-		}
-	}
-	fmt.Printf("database %v not found\n", m.Database)
-	return false
-}
+//func (m *ShopDAO) isDatabase(session *mgo.Session) bool {
+//	databases, err := session.DatabaseNames()
+//	if err != nil {
+//		fmt.Println("error getting db names", err)
+//	}
+//	for _, database := range databases {
+//		if database == m.Database {
+//			return true
+//		}
+//	}
+//	fmt.Printf("database %v not found\n", m.Database)
+//	return false
+//}
 
-func (m *ShopDAO) SeedDatabase(session *mgo.Session) error {
-	fmt.Println("Seed database")
-
-	//db := session.DB(m.Database)
-	//defer session.Close()
+func SeedDatabase(c *cli.Context) error {
+	fmt.Println("Seed database with random values...")
+	if DB == nil {
+		mongodb := ShopDAO{Server: c.GlobalString("mongo"), Database: c.GlobalString("dbname")}
+		mongodb.Connect()
+	}
 
 	// just because
 	err := DB.DropDatabase()

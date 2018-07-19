@@ -12,6 +12,9 @@ services:
     image: shop-api
     ports:
       - "8080:8080"
+    environment:
+      - MONGO=mongodb://mongo:mongo@db:27017
+      - DBNAME=shop
     mem_limit: 150Mb
     memswap_limit: 150Mb
     links:

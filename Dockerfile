@@ -1,19 +1,11 @@
 FROM alpine:3.8
-RUN apk add --no-cache bash
-RUN apk add --no-cache ca-certificates
 
 WORKDIR /bin/
 
 COPY app .
 
-# Uncomment to run the binary in "production" mode:
-# ENV GO_ENV=production
+EXPOSE 8080
 
-# Bind the app to 0.0.0.0 so it can be seen from outside the container
-ENV ADDR=0.0.0.0
-
-EXPOSE 3000
-
-# Uncomment to run the migrations before running the binary:
-# CMD /bin/app migrate; /bin/app
-CMD exec /bin/app
+# Uncomment to run the seed before running the server:
+# CMD /bin/app seed && /bin/app daemon
+CMD exec /bin/app daemon

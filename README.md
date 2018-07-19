@@ -1,6 +1,6 @@
 # Shop API
 
-Let's create API for some common online shop:
+API for some common online shop:
 
 migrate database (create tables)
 docker-compose exec api ./app migrate

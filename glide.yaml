@@ -6,3 +6,5 @@ import:
 - package: gopkg.in/mgo.v2
   subpackages:
   - bson
+- package: github.com/urfave/cli
+  version: ~1.20.0

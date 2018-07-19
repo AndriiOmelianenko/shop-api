@@ -1,47 +1,48 @@
 package main
 
 import (
-	"github.com/gorilla/mux"
-	"log"
-	"net/http"
+	"github.com/urfave/cli"
+	"os"
 	"github.com/AndriiOmelianenko/shop-api/actions"
 	"github.com/AndriiOmelianenko/shop-api/dao"
-	"fmt"
 )
 
 // main is the starting point to shop-api application.
-//func main() {
-//	app := actions.App()
-//	if err := app.Serve(); err != nil {
-//		log.Fatal(err)
-//	}
-//}
-
-
 func main() {
-	router := mux.NewRouter()
+	app := cli.NewApp()
+	app.Name = "shop-api"
+	app.Usage = "Simple and lightweight Shop API"
+	app.Version = "0.1.0"
 
-	router.HandleFunc("/", actions.HomeHandler).Methods("GET")
-	
-	router.HandleFunc("/items", actions.ItemsList).Methods("GET")
-	router.HandleFunc("/items/{item}", actions.ItemsIndex).Methods("GET")
-	
-	router.HandleFunc("/categories", actions.CategoriesList).Methods("GET")
-	router.HandleFunc("/categories/{category}", actions.CategoriesIndex).Methods("GET")
-	
-	router.HandleFunc("/orders", actions.OrdersCreate).Methods("POST")
-	router.HandleFunc("/orders/{order}/item", actions.OrdersUpdate).Methods("PUT")
-
-	mongodb := dao.ShopDAO{Server: "mongodb://mongo:mongo@db:27017", Database: "shop"}
-	err := mongodb.Connect()
-	if err != nil {
-		fmt.Println("Error connecting to mongodb:", err)
+	app.Flags = []cli.Flag{
+		cli.StringFlag{
+			Name:        "mongo",
+			Usage:       "MongoDB address URL in format: mongodb://<user>:<password>@<address>:<port>",
+			EnvVar:      "MONGO",
+			Value:       "mongodb://localhost:27017",
+		},
+		cli.StringFlag{
+			Name:        "dbname",
+			Usage:       "Database name for Shop",
+			EnvVar:      "DBNAME",
+			Value:       "shop",
+		},
 	}
-	//r.HandleFunc("/movies", AllMoviesEndPoint).Methods("GET")
-	//r.HandleFunc("/movies", CreateMovieEndPoint).Methods("POST")
-	//r.HandleFunc("/movies", UpdateMovieEndPoint).Methods("PUT")
-	//r.HandleFunc("/movies", DeleteMovieEndPoint).Methods("DELETE")
-	//r.HandleFunc("/movies/{id}", FindMovieEndpoint).Methods("GET")
 
-	log.Fatal(http.ListenAndServe(":8080", router))
+	app.Commands = []cli.Command{
+		{
+			Name:               "daemon",
+			ShortName:          "d",
+			Usage:              "Start API",
+			Action:             actions.Serve,
+		},
+		{
+			Name:               "seed",
+			ShortName:          "s",
+			Usage:              "Seed the database with random values",
+			Action:             dao.SeedDatabase,
+		},
+	}
+
+	app.Run(os.Args)
 }

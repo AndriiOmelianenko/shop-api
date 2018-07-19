@@ -1,5 +1,5 @@
-hash: 1d266528a5e8d1f483afefe56e78e832553cf360d2a899b2c0e489ae387fe7ef
-updated: 2018-07-19T23:50:06.927443+03:00
+hash: 29106009c2f2d091aa6f3fe34d29a490852d50075fb75c85363e2131e4428d3a
+updated: 2018-07-20T00:05:07.634309+03:00
 imports:
 - name: github.com/corpix/uarand
   version: 2b8494104d86337cdd41d0a49cbed8e4583c0ab4
@@ -9,6 +9,8 @@ imports:
   version: e3702bed27f0d39777b0b37b664b6280e8ef8fbf
 - name: github.com/icrowley/fake
   version: 4178557ae428460c3780a381c824a1f3aceb6325
+- name: github.com/urfave/cli
+  version: cfb38830724cc34fedffe9a2a29fb54fa9169cd1
 - name: gopkg.in/mgo.v2
   version: 9856a29383ce1c59f308dd1cf0363a79b5bef6b5
   subpackages:
