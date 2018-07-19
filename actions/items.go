@@ -26,7 +26,7 @@ func ItemsList(w http.ResponseWriter, r *http.Request) {
 func ItemsIndex(w http.ResponseWriter, r *http.Request) {
 	item := models.Item{}
 	params := mux.Vars(r)
-	err := dao.DB.C(dao.COLLECTION_CATEGORIES).FindId(bson.ObjectIdHex(params["item"])).One(&item)
+	err := dao.DB.C(dao.COLLECTION_ITEMS).FindId(bson.ObjectIdHex(params["item"])).One(&item)
 	if err != nil {
 		fmt.Println("error getting specific item:", err)
 	}

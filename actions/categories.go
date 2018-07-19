@@ -16,7 +16,7 @@ func CategoriesList(w http.ResponseWriter, r *http.Request) {
 	categories := models.Categories{}
 	err := dao.DB.C(dao.COLLECTION_CATEGORIES).Find(bson.M{}).All(&categories)
 	if err != nil {
-			fmt.Println("error getting list of categories:", err)
+		fmt.Println("error getting list of categories:", err)
 	}
 	json.NewEncoder(w).Encode(categories)
 }

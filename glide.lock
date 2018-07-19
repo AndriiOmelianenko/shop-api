@@ -1,48 +1,19 @@
-hash: e1a7b718e5f0bb987d62a29766d8cf54fa7b460aa753323964d78565bcf3ed7f
-updated: 2018-07-18T15:50:16.566315+03:00
+hash: 1d266528a5e8d1f483afefe56e78e832553cf360d2a899b2c0e489ae387fe7ef
+updated: 2018-07-19T23:50:06.927443+03:00
 imports:
-- name: github.com/BurntSushi/toml
-  version: b26d9c308763d68093482582cea63d69be07a0f0
 - name: github.com/corpix/uarand
   version: 2b8494104d86337cdd41d0a49cbed8e4583c0ab4
-- name: github.com/gobuffalo/buffalo
-  version: 25619606ab2ac525ee38a07a15bfcffc832125b4
-  subpackages:
-  - middleware
-  - middleware/ssl
-  - render
-- name: github.com/gobuffalo/envy
-  version: 2d0f467653f3d961ce9ada4d32a230bdcb3bfe11
-- name: github.com/gobuffalo/packr
-  version: bd47f2894846e32edcf9aa37290fef76c327883f
-- name: github.com/gobuffalo/pop
-  version: 9936c00d4230dae87d8ac5cf73149d9de7b0e899
-- name: github.com/gobuffalo/suite
-  version: e731d05da4535a4a3bd8f22fb7cd231d555e0a41
-- name: github.com/gobuffalo/uuid
-  version: 3a9fb6c5c481d4886f1e9323c61ad743fb955860
-- name: github.com/gobuffalo/validate
-  version: 42d8db6e06e617cdedcc7a849d6690a2cb5a8d28
-  subpackages:
-  - validators
-- name: github.com/gobuffalo/x
-  version: 11ca13c05abd73167c56ed10f8874c7c7497f759
-  subpackages:
-  - sessions
 - name: github.com/gorilla/context
   version: 08b5f424b9271eedf6f9f0ce86cb9396ed337a42
 - name: github.com/gorilla/mux
   version: e3702bed27f0d39777b0b37b664b6280e8ef8fbf
 - name: github.com/icrowley/fake
   version: 4178557ae428460c3780a381c824a1f3aceb6325
-- name: github.com/markbates/grift
-  version: 76f93617a788d350124f749acb3790276a436cc0
-  subpackages:
-  - grift
-- name: github.com/rs/cors
-  version: ca016a06a5753f8ba03029c0aa5e54afb1bf713f
-- name: github.com/unrolled/secure
-  version: 8287f3899c8e3d490748e18fe7d438629132914e
 - name: gopkg.in/mgo.v2
-  version: 3f83fa5005286a7fe593b055f0d7771a7dce4655
+  version: 9856a29383ce1c59f308dd1cf0363a79b5bef6b5
+  subpackages:
+  - bson
+  - internal/json
+  - internal/sasl
+  - internal/scram
 testImports: []
