@@ -2,14 +2,15 @@ package dao
 
 import (
 	"fmt"
-	"github.com/AndriiOmelianenko/shop-api/models"
-	"github.com/icrowley/fake"
-	"gopkg.in/mgo.v2"
 	"math/rand"
-	"gopkg.in/mgo.v2/bson"
 	"sync"
 	"time"
+
+	"github.com/AndriiOmelianenko/shop-api/models"
+	"github.com/icrowley/fake"
 	"github.com/urfave/cli"
+	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
 )
 
 type ShopDAO struct {
@@ -62,6 +63,7 @@ func SeedDatabase(c *cli.Context) error {
 	}
 
 	var wg sync.WaitGroup
+	rand.Seed(time.Now().UnixNano())
 
 	firstLevelCategoriesNum := 5 + rand.Intn(11)
 	firstLevelCategories := generateFirstLevelCategories(firstLevelCategoriesNum)
@@ -100,31 +102,7 @@ func SeedDatabase(c *cli.Context) error {
 			}
 		}()
 	}
-	//
-	//orders := generateOrders(ordersNum)
-	//
-	//wg.Add(1)
-	//go func() {
-	//	defer wg.Done()
-	//	err = models.DB.Create(&orders)
-	//	if err != nil {
-	//		fmt.Println("error seeding orders records:", err)
-	//	}
-	//}()
-	//
-	//ordereds := models.Ordereds{}
-	//for i := 0; i < ordersNum; i++ {
-	//	ordereds = append(ordereds, generateOrdereds(orderedNum, orders[i], totalItems[rand.Intn(totalItemsNum)])...)
-	//}
-	//
-	//wg.Add(1)
-	//go func() {
-	//	defer wg.Done()
-	//	err = models.DB.Create(&ordereds)
-	//	if err != nil {
-	//		fmt.Println("error seeding ordereds records:", err)
-	//	}
-	//}()
+
 	wg.Wait()
 	fmt.Println("Generated first Level Categories ", len(firstLevelCategories))
 	fmt.Println("Generated second Level Categories", len(secondLevelCategories))
@@ -141,9 +119,9 @@ func generateFirstLevelCategories(number int) models.Categories {
 		//	fmt.Println("error getting new uuid:", err)
 		//}
 		category := models.Category{
-			ID:			 bson.NewObjectId(),
-			//CreatedAt: time.Time{},
-			//UpdatedAt: time.Time{},
+			ID:          bson.NewObjectId(),
+			CreatedAt:   time.Now(),
+			UpdatedAt:   time.Now(),
 			Alias:       fake.ProductName(),
 			Title:       fake.Title(),
 			Description: fake.ProductName(),
@@ -160,8 +138,8 @@ func generateSecondLevelCategories(number int, category models.Category) models.
 	for i := 0; i < number; i++ {
 		category := models.Category{
 			ID:          bson.NewObjectId(),
-			//CreatedAt: time.Time{},
-			//UpdatedAt: time.Time{},
+			CreatedAt:   time.Now(),
+			UpdatedAt:   time.Now(),
 			Alias:       fake.ProductName(),
 			Title:       fake.Title(),
 			Description: fake.ProductName(),
@@ -179,7 +157,7 @@ func generateItems(number int, category models.Category) models.Items {
 		item := models.Item{
 			ID:          bson.NewObjectId(),
 			CreatedAt:   time.Now(),
-			//UpdatedAt:   time.Time{},
+			UpdatedAt:   time.Now(),
 			Alias:       fake.ProductName(),
 			Title:       fake.Product(),
 			Description: fake.ProductName(),
@@ -192,6 +170,7 @@ func generateItems(number int, category models.Category) models.Items {
 	}
 	return items
 }
+
 //
 //func generateOrders(number int) models.Orders {
 //	orders := models.Orders{}

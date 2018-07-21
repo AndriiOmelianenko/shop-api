@@ -1,13 +1,14 @@
 package actions
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
+
 	"github.com/AndriiOmelianenko/shop-api/dao"
-	"gopkg.in/mgo.v2/bson"
 	"github.com/AndriiOmelianenko/shop-api/models"
-	"encoding/json"
 	"github.com/gorilla/mux"
+	"gopkg.in/mgo.v2/bson"
 )
 
 // ItemsList default implementation.

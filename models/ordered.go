@@ -12,14 +12,15 @@ package models
 //)
 //
 type Ordered struct {
-	ID        int       `json:"id" bson:"id"`
+	ID int `json:"id" bson:"id"`
 	//CreatedAt time.Time `json:"created_at" bson:"created_at"`
 	//UpdatedAt time.Time `json:"updated_at" bson:"updated_at"`
-	OrderID   int       `json:"order_id" bson:"order_id"`
+	OrderID int `json:"order_id" bson:"order_id"`
 	//ItemID    uuid.UUID `json:"item_id" bson:"item_id"`
-	ItemCnt   int       `json:"item_cnt" bson:"item_cnt"`
-	ItemSum   int       `json:"item_sum" bson:"item_sum"`
+	ItemCnt int `json:"item_cnt" bson:"item_cnt"`
+	ItemSum int `json:"item_sum" bson:"item_sum"`
 }
+
 //
 //// String is not required by pop and may be deleted
 //func (o Ordered) String() string {
@@ -29,6 +30,7 @@ type Ordered struct {
 //
 //// Ordereds is not required by pop and may be deleted
 type Ordereds []Ordered
+
 //
 //// String is not required by pop and may be deleted
 //func (o Ordereds) String() string {

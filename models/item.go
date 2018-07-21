@@ -1,8 +1,9 @@
 package models
 
 import (
-	"gopkg.in/mgo.v2/bson"
 	"time"
+
+	"gopkg.in/mgo.v2/bson"
 )
 
 //
@@ -18,16 +19,17 @@ import (
 //
 type Item struct {
 	ID          bson.ObjectId `json:"id" bson:"_id"`
-	CreatedAt   time.Time `json:"created_at" bson:"created_at"`
-	//UpdatedAt   time.Time `json:"updated_at" bson:"updated_at"`
-	Alias       string    `json:"alias" bson:"alias"`
-	Title       string    `json:"title" bson:"title"`
-	Description string    `json:"description" bson:"description"`
-	Pictures    string    `json:"pictures" bson:"pictures"`
-	Price       int       `json:"price" bson:"price"`
-	Count       int       `json:"count" bson:"count"`
+	CreatedAt   time.Time     `json:"created_at" bson:"created_at"`
+	UpdatedAt   time.Time     `json:"updated_at" bson:"updated_at"`
+	Alias       string        `json:"alias" bson:"alias"`
+	Title       string        `json:"title" bson:"title"`
+	Description string        `json:"description" bson:"description"`
+	Pictures    string        `json:"pictures" bson:"pictures"`
+	Price       int           `json:"price" bson:"price"`
+	Count       int           `json:"count" bson:"count"`
 	//CategoryID  uuid.UUID `json:"category_id" bson:"category_id"`
 }
+
 //
 //// String is not required by pop and may be deleted
 //func (i Item) String() string {
@@ -37,6 +39,7 @@ type Item struct {
 //
 // Items is not required by pop and may be deleted
 type Items []Item
+
 //
 //// String is not required by pop and may be deleted
 //func (i Items) String() string {

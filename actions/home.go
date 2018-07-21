@@ -1,8 +1,8 @@
 package actions
 
 import (
-	"net/http"
 	"fmt"
+	"net/http"
 )
 
 // HomeHandler is a default handler to serve up

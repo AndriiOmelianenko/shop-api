@@ -11,12 +11,13 @@ package models
 //)
 //
 type Order struct {
-	ID        int       `json:"id" bson:"_id"`
+	ID int `json:"id" bson:"_id"`
 	//CreatedAt time.Time `json:"created_at" db:"created_at"`
 	//UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
-	Status    string    `json:"status" bson:"status"`
-	Sum       int       `json:"sum" bson:"sum"`
+	Status string `json:"status" bson:"status"`
+	Sum    int    `json:"sum" bson:"sum"`
 }
+
 //
 //// String is not required by pop and may be deleted
 //func (o Order) String() string {
@@ -26,6 +27,7 @@ type Order struct {
 //
 //// Orders is not required by pop and may be deleted
 type Orders []Order
+
 //
 //// String is not required by pop and may be deleted
 //func (o Orders) String() string {

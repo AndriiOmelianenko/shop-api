@@ -1,28 +1,22 @@
 package models
 
-import "gopkg.in/mgo.v2/bson"
+import (
+	"time"
 
-//
-//import (
-//	"encoding/json"
-//	"time"
-//
-//	"github.com/gobuffalo/pop"
-//	"github.com/gobuffalo/uuid"
-//	"github.com/gobuffalo/validate"
-//	"github.com/gobuffalo/validate/validators"
-//)
-//
+	"gopkg.in/mgo.v2/bson"
+)
+
 type Category struct {
-	ID          bson.ObjectId    `bson:"_id,omitempty" json:"id"` //uuid.UUID `json:"id" db:"id"`
-	//CreatedAt   time.Time `json:"created_at" bson:"created_at"`
-	//UpdatedAt   time.Time `json:"updated_at" bson:"updated_at"`
-	Alias       string    `bson:"alias" json:"alias"`
-	Title       string    `bson:"title" json:"title"`
-	Description string    `bson:"description" json:"description"`
-	Logo        string    `bson:"logo" json:"logo"`
-	//ParentID    uuid.UUID `json:"parent_id" bson:"parent_id"`
+	ID          bson.ObjectId `bson:"_id,omitempty" json:"id"`
+	CreatedAt   time.Time     `bson:"created_at" json:"created_at"`
+	UpdatedAt   time.Time     `bson:"updated_at" json:"updated_at"`
+	Alias       string        `bson:"alias" json:"alias"`
+	Title       string        `bson:"title" json:"title"`
+	Description string        `bson:"description" json:"description"`
+	Logo        string        `bson:"logo" json:"logo"`
+	ParentID    bson.ObjectId `json:"parent_id" bson:"parent_id"`
 }
+
 //
 //// String is not required by pop and may be deleted
 //func (c Category) String() string {
@@ -32,6 +26,7 @@ type Category struct {
 //
 // Categories is not required by pop and may be deleted
 type Categories []Category
+
 //
 //// String is not required by pop and may be deleted
 //func (c Categories) String() string {
