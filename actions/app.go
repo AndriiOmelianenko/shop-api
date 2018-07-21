@@ -20,14 +20,14 @@ func Serve(c *cli.Context) {
 	router.HandleFunc("/categories", CategoriesList).Methods("GET")
 	router.HandleFunc("/categories/{category}", CategoriesIndex).Methods("GET")
 
+	router.HandleFunc("/orders", OrdersList).Methods("GET")
 	router.HandleFunc("/orders", OrdersCreate).Methods("POST")
-	router.HandleFunc("/orders/{order}/item", OrdersUpdate).Methods("PUT")
+	router.HandleFunc("/orders/{order}", OrdersIndex).Methods("GET")
+	router.HandleFunc("/orders/{order}/items", OrdersCreateItem).Methods("POST")
 	if dao.DB == nil {
 		mongodb := dao.ShopDAO{Server: c.GlobalString("mongo"), Database: c.GlobalString("dbname")}
 		mongodb.Connect()
 	}
-	//mongodb := dao.ShopDAO{Server: c.GlobalString("mongo"), Database: c.GlobalString("dbname")}
-	//mongodb.Connect()
 
 	//r.HandleFunc("/movies", AllMoviesEndPoint).Methods("GET")
 	//r.HandleFunc("/movies", CreateMovieEndPoint).Methods("POST")

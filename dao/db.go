@@ -113,20 +113,17 @@ func SeedDatabase(c *cli.Context) error {
 
 func generateFirstLevelCategories(number int) models.Categories {
 	categories := models.Categories{}
+	currentTime := time.Now()
 	for i := 0; i < number; i++ {
-		////newUUID, err := uuid.NewV4()
-		//if err != nil {
-		//	fmt.Println("error getting new uuid:", err)
-		//}
 		category := models.Category{
 			ID:          bson.NewObjectId(),
-			CreatedAt:   time.Now(),
-			UpdatedAt:   time.Now(),
+			CreatedAt:   currentTime,
+			UpdatedAt:   currentTime,
 			Alias:       fake.ProductName(),
 			Title:       fake.Title(),
 			Description: fake.ProductName(),
 			Logo:        fake.ProductName(),
-			//ParentID:  uuid.UUID{},
+			ParentID:    bson.ObjectId("000000000000"),
 		}
 		categories = append(categories, category)
 	}
@@ -135,16 +132,17 @@ func generateFirstLevelCategories(number int) models.Categories {
 
 func generateSecondLevelCategories(number int, category models.Category) models.Categories {
 	categories := models.Categories{}
+	currentTime := time.Now()
 	for i := 0; i < number; i++ {
 		category := models.Category{
 			ID:          bson.NewObjectId(),
-			CreatedAt:   time.Now(),
-			UpdatedAt:   time.Now(),
+			CreatedAt:   currentTime,
+			UpdatedAt:   currentTime,
 			Alias:       fake.ProductName(),
 			Title:       fake.Title(),
 			Description: fake.ProductName(),
 			Logo:        fake.ProductName(),
-			//ParentID:  category.ID,
+			ParentID:    category.ID,
 		}
 		categories = append(categories, category)
 	}
@@ -153,62 +151,21 @@ func generateSecondLevelCategories(number int, category models.Category) models.
 
 func generateItems(number int, category models.Category) models.Items {
 	items := models.Items{}
+	currentTime := time.Now()
 	for i := 0; i < number; i++ {
 		item := models.Item{
 			ID:          bson.NewObjectId(),
-			CreatedAt:   time.Now(),
-			UpdatedAt:   time.Now(),
+			CreatedAt:   currentTime,
+			UpdatedAt:   currentTime,
 			Alias:       fake.ProductName(),
 			Title:       fake.Product(),
 			Description: fake.ProductName(),
 			Pictures:    fake.ProductName(),
 			Price:       rand.Intn(1000),
 			Count:       rand.Intn(100),
-			//CategoryID:  category.ID,
+			CategoryID:  category.ID,
 		}
 		items = append(items, item)
 	}
 	return items
 }
-
-//
-//func generateOrders(number int) models.Orders {
-//	orders := models.Orders{}
-//	for i := 0; i < number; i++ {
-//		order := models.Order{
-//			ID:        i,
-//			CreatedAt: time.Time{},
-//			UpdatedAt: time.Time{},
-//			Status: func() string {
-//				decision := rand.Intn(3)
-//				if decision == 0 {
-//					return "Completed"
-//				} else if decision == 1 {
-//					return "Created"
-//				}
-//				return "Shipped"
-//			}(),
-//			Sum: rand.Intn(1000),
-//		}
-//		orders = append(orders, order)
-//	}
-//	return orders
-//}
-//
-//func generateOrdereds(number int, order models.Order, item models.Item) models.Ordereds {
-//	ordereds := models.Ordereds{}
-//	for i := 0; i < number; i++ {
-//		ordered := models.Ordered{
-//			ID:        i,
-//			CreatedAt: time.Time{},
-//			UpdatedAt: time.Time{},
-//			OrderID:   order.ID,
-//			ItemID:    item.ID,
-//			ItemCnt:   1,
-//			ItemSum:   100,
-//		}
-//		ordereds = append(ordereds, ordered)
-//	}
-//	return ordereds
-//}
-//

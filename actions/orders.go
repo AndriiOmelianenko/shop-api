@@ -1,39 +1,76 @@
 package actions
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
+
+	"time"
+
+	"github.com/AndriiOmelianenko/shop-api/dao"
+	"github.com/AndriiOmelianenko/shop-api/models"
+	"github.com/gorilla/mux"
+	"gopkg.in/mgo.v2/bson"
 )
 
-//
-//import (
-//	"github.com/gobuffalo/buffalo"
-//	"encoding/json"
-//	"github.com/AndriiOmelianenko/shop-api/models"
-//	"strconv"
-//)
-//
-//// curl -X POST -H "Content-Type: application/json" http://127.0.0.1:8080/orders/create -d '{"status": "Shipped", "sum": 150}'
-//// OrdersCreate default implementation.
+// OrdersCreate default implementation.
+// curl -X POST -H "Content-Type: application/json" http://127.0.0.1:8080/orders -d '{"status": "new"}'
 func OrdersCreate(w http.ResponseWriter, r *http.Request) {
-	//	decoder := json.NewDecoder(c.Request().Body)
-	//	order := models.Order{}
-	//	err := decoder.Decode(&order)
-	//	if err != nil {
-	//		return c.Render(404, r.String("ERROR: decoding json: %v", err))
-	//	}
-	//	err = models.DB.Create(&order)
-	//	if err != nil {
-	//		return c.Render(404, r.String("ERROR: creating order record: %v", err))
-	//	}
-	//	return c.Render(200, r.String("Order created: %v", order))
-	fmt.Fprintln(w, "not implemented yet !")
+	decoder := json.NewDecoder(r.Body)
+	order := models.Order{}
+	err := decoder.Decode(&order)
+	if err != nil {
+		fmt.Println("error decoding json:", err)
+		fmt.Fprintln(w, "error decoding json:", err)
+		return
+	}
+	currentTime := time.Now()
+	order.ID = bson.NewObjectId()
+	order.CreatedAt = currentTime
+	order.UpdatedAt = currentTime
+
+	err = dao.DB.C(dao.COLLECTION_ORDERS).Insert(&order)
+	if err != nil {
+		fmt.Println("error adding order to mongo:", err)
+		fmt.Fprintln(w, "error adding order to mongo:", err)
+		return
+	}
+
+	fmt.Fprint(w, "Order created: ")
+	json.NewEncoder(w).Encode(order)
+}
+
+// OrdersList default implementation.
+// curl -X GET -H "Content-Type: application/json" http://127.0.0.1:8080/orders
+func OrdersList(w http.ResponseWriter, r *http.Request) {
+	orders := models.Orders{}
+	err := dao.DB.C(dao.COLLECTION_ORDERS).Find(bson.M{}).All(&orders)
+	if err != nil {
+		fmt.Println("error getting list of orders:", err)
+		fmt.Fprintln(w, "error getting list of orders:", err)
+		return
+	}
+	json.NewEncoder(w).Encode(orders)
+}
+
+// OrdersIndex default implementation.
+// curl -X GET -H "Content-Type: application/json" http://127.0.0.1:8080/orders/<orderID>
+func OrdersIndex(w http.ResponseWriter, r *http.Request) {
+	order := models.Order{}
+	params := mux.Vars(r)
+	err := dao.DB.C(dao.COLLECTION_ORDERS).FindId(bson.ObjectIdHex(params["order"])).One(&order)
+	if err != nil {
+		fmt.Println("error getting specific order:", err)
+		fmt.Fprintln(w, "error getting specific order:", err)
+		return
+	}
+	json.NewEncoder(w).Encode(order)
 }
 
 //
-//// curl -X PUT -H "Content-Type: application/json" http://127.0.0.1:8080/orders/3/item -d '{"item_id": "fa0f13d1-af55-4823-8f85-7e3284316b70", "item_cnt": 5}'
+//// curl -X POST -H "Content-Type: application/json" http://127.0.0.1:8080/orders/3/item -d '{"item_id": "fa0f13d1-af55-4823-8f85-7e3284316b70", "item_cnt": 5}'
 //// OrdersUpdate default implementation.
-func OrdersUpdate(w http.ResponseWriter, r *http.Request) {
+func OrdersCreateItem(w http.ResponseWriter, r *http.Request) {
 	//	decoder := json.NewDecoder(c.Request().Body)
 	//	ordered := models.Ordered{}
 	//	err := decoder.Decode(&ordered)
