@@ -24,6 +24,9 @@ func Serve(c *cli.Context) {
 	router.HandleFunc("/orders", OrdersCreate).Methods("POST")
 	router.HandleFunc("/orders/{order}", OrdersIndex).Methods("GET")
 	router.HandleFunc("/orders/{order}/items", OrdersCreateItem).Methods("POST")
+
+	router.HandleFunc("/version", GetVersion).Methods("GET")
+
 	if dao.DB == nil {
 		mongodb := dao.ShopDAO{Server: c.GlobalString("mongo"), Database: c.GlobalString("dbname")}
 		mongodb.Connect()

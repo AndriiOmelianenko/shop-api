@@ -24,8 +24,8 @@ func OrdersCreate(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "error decoding json:", err)
 		return
 	}
-	currentTime := time.Now()
 	order.ID = bson.NewObjectId()
+	currentTime := time.Now()
 	order.CreatedAt = currentTime
 	order.UpdatedAt = currentTime
 
@@ -67,34 +67,76 @@ func OrdersIndex(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(order)
 }
 
-//
-//// curl -X POST -H "Content-Type: application/json" http://127.0.0.1:8080/orders/3/item -d '{"item_id": "fa0f13d1-af55-4823-8f85-7e3284316b70", "item_cnt": 5}'
-//// OrdersUpdate default implementation.
+// OrdersUpdate default implementation.
+// curl -X POST -H "Content-Type: application/json" http://127.0.0.1:8080/orders/<orderID>/item -d '{"item_id": "<itemID>", "item_cnt": 5}'
 func OrdersCreateItem(w http.ResponseWriter, r *http.Request) {
-	//	decoder := json.NewDecoder(c.Request().Body)
-	//	ordered := models.Ordered{}
-	//	err := decoder.Decode(&ordered)
-	//	if err != nil {
-	//		return c.Render(404, r.String("ERROR: decoding json: %v", err))
-	//	}
-	//	orderID, err := strconv.Atoi(c.Param("order"))
-	//	if err != nil {
-	//		return c.Render(404, r.String("ERROR: converting orderID to int: %v", err))
-	//	}
-	//	ordered.OrderID = orderID
-	//
-	//	// get item price and calculate ordered price based on item_price * item_count
-	//	item := models.Item{}
-	//	err = models.DB.Find(&item, ordered.ItemID)
-	//	if err != nil {
-	//		return c.Render(404, r.String("ERROR: cant find item in database: %v", err))
-	//	}
-	//	ordered.ItemSum = ordered.ItemCnt * item.Price
-	//
-	//	err = models.DB.Create(&ordered)
-	//	if err != nil {
-	//		return c.Render(404, r.String("ERROR: creating ordered record: %v", err))
-	//	}
-	//	return c.Render(200, r.String("Item added to order: %v", ordered))
-	fmt.Fprintln(w, "not implemented yet !")
+	decoder := json.NewDecoder(r.Body)
+	ordered := models.Ordered{}
+	err := decoder.Decode(&ordered)
+	if err != nil {
+		fmt.Println("error decoding json:", err)
+		fmt.Fprintln(w, "error decoding json:", err)
+		return
+	}
+
+	params := mux.Vars(r)
+
+	orderID := bson.ObjectIdHex(params["order"])
+	if err != nil {
+		fmt.Println("error converting orderID:", err)
+		fmt.Fprintln(w, "error converting orderID:", err)
+		return
+	}
+	ordered.OrderID = orderID
+
+	// get order information
+	order := models.Order{}
+	err = dao.DB.C(dao.COLLECTION_ORDERS).FindId(bson.ObjectId(ordered.OrderID)).One(&order)
+	if err != nil {
+		fmt.Println("cant find order in database:", err)
+		fmt.Fprintln(w, "cant find order in database:", err)
+		return
+	}
+
+	// get item information
+	item := models.Item{}
+	err = dao.DB.C(dao.COLLECTION_ITEMS).FindId(bson.ObjectId(ordered.ItemID)).One(&item)
+	if err != nil {
+		fmt.Println("cant find item in database:", err)
+		fmt.Fprintln(w, "cant find item in database:", err)
+		return
+	}
+
+	ordered.ID = bson.NewObjectId()
+	currentTime := time.Now()
+	ordered.CreatedAt = currentTime
+	ordered.UpdatedAt = currentTime
+
+	// ordered price based on item_price * item_count
+	ordered.ItemSum = ordered.ItemCnt * item.Price
+
+	// update total sum in order
+	order.Sum = order.Sum + ordered.ItemSum
+
+	// insert new ordered
+	err = dao.DB.C(dao.COLLECTION_ORDEREDS).Insert(&ordered)
+	if err != nil {
+		fmt.Println("error adding ordered to mongo:", err)
+		fmt.Fprintln(w, "error adding ordered to mongo:", err)
+		return
+	}
+
+	// update order
+	err = dao.DB.C(dao.COLLECTION_ORDERS).UpdateId(bson.ObjectId(order.ID), &order)
+	if err != nil {
+		fmt.Println("error updating order to mongo:", err)
+		fmt.Fprintln(w, "error updating order to mongo:", err)
+		return
+	}
+
+	fmt.Fprint(w, "Item added to order: ")
+	json.NewEncoder(w).Encode(ordered)
+
+	fmt.Fprint(w, "Order updated: ")
+	json.NewEncoder(w).Encode(order)
 }
