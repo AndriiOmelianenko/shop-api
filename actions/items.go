@@ -12,7 +12,6 @@ import (
 )
 
 // ItemsList default implementation.
-// curl -X GET -H "Content-Type: application/json" http://127.0.0.1:8080/items
 func ItemsList(w http.ResponseWriter, r *http.Request) {
 	items := models.Items{}
 	err := dao.DB.C(dao.COLLECTION_ITEMS).Find(bson.M{}).All(&items)
@@ -25,7 +24,6 @@ func ItemsList(w http.ResponseWriter, r *http.Request) {
 }
 
 // ItemsIndex default implementation.
-// curl -X GET -H "Content-Type: application/json" http://127.0.0.1:8080/items/<itemID>
 func ItemsIndex(w http.ResponseWriter, r *http.Request) {
 	item := models.Item{}
 	params := mux.Vars(r)

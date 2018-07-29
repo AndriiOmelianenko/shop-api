@@ -12,7 +12,6 @@ import (
 )
 
 // CategoriesList default implementation.
-// curl -X GET -H "Content-Type: application/json" http://127.0.0.1:8080/categories
 func CategoriesList(w http.ResponseWriter, r *http.Request) {
 	categories := models.Categories{}
 	err := dao.DB.C(dao.COLLECTION_CATEGORIES).Find(bson.M{}).All(&categories)
@@ -25,7 +24,6 @@ func CategoriesList(w http.ResponseWriter, r *http.Request) {
 }
 
 // CategoriesIndex default implementation.
-// curl -X GET -H "Content-Type: application/json" http://127.0.0.1:8080/categories/<categoryID>
 func CategoriesIndex(w http.ResponseWriter, r *http.Request) {
 	category := models.Category{}
 	params := mux.Vars(r)

@@ -14,7 +14,6 @@ import (
 )
 
 // OrdersCreate default implementation.
-// curl -X POST -H "Content-Type: application/json" http://127.0.0.1:8080/orders -d '{"status": "new"}'
 func OrdersCreate(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	order := models.Order{}
@@ -41,7 +40,6 @@ func OrdersCreate(w http.ResponseWriter, r *http.Request) {
 }
 
 // OrdersList default implementation.
-// curl -X GET -H "Content-Type: application/json" http://127.0.0.1:8080/orders
 func OrdersList(w http.ResponseWriter, r *http.Request) {
 	orders := models.Orders{}
 	err := dao.DB.C(dao.COLLECTION_ORDERS).Find(bson.M{}).All(&orders)
@@ -54,7 +52,6 @@ func OrdersList(w http.ResponseWriter, r *http.Request) {
 }
 
 // OrdersIndex default implementation.
-// curl -X GET -H "Content-Type: application/json" http://127.0.0.1:8080/orders/<orderID>
 func OrdersIndex(w http.ResponseWriter, r *http.Request) {
 	order := models.Order{}
 	params := mux.Vars(r)
@@ -68,7 +65,6 @@ func OrdersIndex(w http.ResponseWriter, r *http.Request) {
 }
 
 // OrdersUpdate default implementation.
-// curl -X POST -H "Content-Type: application/json" http://127.0.0.1:8080/orders/<orderID>/item -d '{"item_id": "<itemID>", "item_cnt": 5}'
 func OrdersCreateItem(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	ordered := models.Ordered{}
